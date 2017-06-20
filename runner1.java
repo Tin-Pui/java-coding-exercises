@@ -15,7 +15,7 @@ public class runner1 {
         createRemoveEmptyLinesFile(fileName, "num4.txt");
     }
 
-    public static int totalNum(String fileName){
+    public static int totalNum(final String fileName){
         BufferedReader bufferedReader;
         String stringLine;
         File readInFile;
@@ -47,7 +47,7 @@ public class runner1 {
         return total;
     }
 
-    public static void createNewFile(String fileName, String newFileName){
+    public static void createNewFile(final String fileName, final String newFileName){
         BufferedReader bufferedReader;
         String stringLine;
         File readInFile;
@@ -88,7 +88,7 @@ public class runner1 {
         }
     }
 
-    public static void createReorderedFile(String readFileName, String writeFileName) {
+    public static void createReorderedFile(final String readFileName, final String writeFileName) {
         File readFromFile;
         BufferedReader bufferedReader;
 
@@ -145,7 +145,7 @@ public class runner1 {
         }
     }
 
-    public static void createRemoveEmptyLinesFile(String readFileName, String writeFileName) {
+    public static void createRemoveEmptyLinesFile(final String readFileName, final String writeFileName) {
         File readFromFile;
         BufferedReader bufferedReader;
 
