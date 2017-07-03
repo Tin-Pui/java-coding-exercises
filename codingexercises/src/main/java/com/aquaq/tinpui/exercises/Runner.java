@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 public class Runner {
 
     public static void main(String[] args){
-        String fileName = "num.txt";
+        String fileName = "src/main/resources/num.txt";
         System.out.println(totalNum(fileName));
         createNewFile(fileName, "num2.txt");
         createReorderedFile(fileName, "num3.txt");
@@ -99,8 +99,8 @@ public class Runner {
 
         String readLine;
         Integer lineNumber = 0;
-        List<String> stringList = new ArrayList<>();
-        Map<Integer, String> stringToLineMap = new HashMap<>();
+        List<String> stringList = new ArrayList<String>();
+        Map<Integer, String> stringToLineMap = new HashMap<Integer, String>();
 
         try {
             readFromFile  = new File(readFileName);
