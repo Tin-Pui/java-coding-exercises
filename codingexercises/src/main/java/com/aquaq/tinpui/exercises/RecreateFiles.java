@@ -10,7 +10,7 @@ public class RecreateFiles {
 
     /**
      * This method creates a new file using an existing text file, removes all empty lines and adds the ASCII character
-     * code for the first character in each line at the end of the line.
+     * code for the first character of each line at the end of the line.
      * @param fileName
      * @param newFileName
      */
