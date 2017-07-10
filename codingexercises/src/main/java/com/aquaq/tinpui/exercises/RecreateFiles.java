@@ -11,10 +11,11 @@ public class RecreateFiles {
     /**
      * This method creates a new file using an existing text file, removes all empty lines and adds the ASCII character
      * code for the first character of each line at the end of the line.
-     * @param fileName
-     * @param newFileName
+     *
+     * @param readFileName
+     * @param writeFileName
      */
-    public static void createNewFile(final String fileName, final String newFileName){
+    public static void createNewFile(final String readFileName, final String writeFileName) {
         BufferedReader bufferedReader;
         String stringLine;
         File readInFile;
@@ -22,36 +23,64 @@ public class RecreateFiles {
         File newFile;
         BufferedWriter bufferedWriter;
         try {
-            readInFile = new File(fileName);
+            readInFile = new File(readFileName);
             bufferedReader = new BufferedReader(new FileReader(readInFile));
 
-            newFile = new File(newFileName);
+            newFile = new File(writeFileName);
             bufferedWriter = new BufferedWriter(new FileWriter(newFile));
 
             stringLine = bufferedReader.readLine();
-            char firstChar;
 
-            int totalLines = 0;
+            boolean firstLine = true;
             while (stringLine != null) {
-                if(stringLine.length() != 0) {
-                    firstChar = stringLine.charAt(0);
-                    String stringToEnter = stringLine + " " + (int) firstChar;
-
-                    System.out.println(stringToEnter);
-                    if (totalLines > 0) {
-                        bufferedWriter.newLine();
-                    }
-                    bufferedWriter.write(stringToEnter);
-                    totalLines++;
-                    bufferedWriter.flush();
+                if (processLineForNewFile(stringLine, bufferedWriter, firstLine)) {
+                    firstLine = false;
                 }
                 stringLine = bufferedReader.readLine();
             }
 
             bufferedReader.close();
             bufferedWriter.close();
-        } catch (IOException e1){
+        } catch (IOException e1) {
             System.out.println("An error occurred.");
+        }
+    }
+
+    public static void createNewFile(final String[] stringArray, final String writeFileName) {
+        File newFile;
+        BufferedWriter bufferedWriter;
+
+        try {
+            newFile = new File(writeFileName);
+            bufferedWriter = new BufferedWriter(new FileWriter(newFile));
+
+            String stringLine;
+            boolean firstLine = true;
+            for (int index = 0; index < stringArray.length; index++) {
+                stringLine = stringArray[index];
+                if (processLineForNewFile(stringLine, bufferedWriter, firstLine)) {
+                    firstLine = false;
+                }
+            }
+        } catch (IOException e1) {
+            System.out.println("An error occurred.");
+        }
+    }
+
+    private static boolean processLineForNewFile(final String stringLine, BufferedWriter bufferedWriter, boolean firstLine) throws IOException {
+        if (stringLine.length() != 0) {
+            char firstChar = stringLine.charAt(0);
+            String stringToEnter = stringLine + " " + (int) firstChar;
+
+            System.out.println(stringToEnter);
+            if (!firstLine) {
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.write(stringToEnter);
+            bufferedWriter.flush();
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -68,7 +97,7 @@ public class RecreateFiles {
         Map<Integer, String> stringToLineMap = new HashMap<>();
 
         try {
-            readFromFile  = new File(readFileName);
+            readFromFile = new File(readFileName);
             bufferedReader = new BufferedReader(new FileReader(readFromFile));
 
             writeToFile = new File(writeFileName);
@@ -84,31 +113,63 @@ public class RecreateFiles {
                 lineNumber++;
             }
 
-            Collections.sort(stringList);
-            int totalLines = 0;
-            while (!stringList.isEmpty()) {
-                String currentString = stringList.get(0);
-                Integer stringLineNumber = -1;
-                for (Map.Entry<Integer, String> entry : stringToLineMap.entrySet()) {
-                    if (Objects.equals(currentString, entry.getValue())) {
-                        stringLineNumber = entry.getKey();
-                        if (totalLines > 0) {
-                            bufferedWriter.newLine();
-                        }
-                        bufferedWriter.write(stringLineNumber + "\t" + currentString);
-                        totalLines++;
-                        bufferedWriter.flush();
-                        break;
-                    }
-                }
-                stringList.remove(currentString);
-                stringToLineMap.remove(stringLineNumber);
-            }
+            processStringListForReorderedFile(stringList, stringToLineMap, bufferedWriter);
 
             bufferedReader.close();
             bufferedWriter.close();
         } catch (IOException e) {
             System.out.println("Error occurred.");
+        }
+    }
+
+    public static void createReorderedFile(final String[] stringArray, final String writeFileName) {
+        File writeToFile;
+        BufferedWriter bufferedWriter;
+
+        String readLine;
+        Integer lineNumber = 0;
+        Map<Integer, String> stringToLineMap = new HashMap<>();
+
+        try {
+            writeToFile = new File(writeFileName);
+            bufferedWriter = new BufferedWriter(new FileWriter(writeToFile));
+
+            for (int index = 0; index < stringArray.length; index++) {
+                readLine = stringArray[index];
+                lineNumber++;
+                stringToLineMap.put(lineNumber, readLine);
+            }
+
+            List<String> stringList = new ArrayList<>(Arrays.asList(stringArray));
+
+            processStringListForReorderedFile(stringList, stringToLineMap, bufferedWriter);
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error occurred.");
+        }
+    }
+
+    private static void processStringListForReorderedFile(List<String> stringList, Map<Integer, String> stringToLineMap, BufferedWriter bufferedWriter) throws IOException {
+        Collections.sort(stringList);
+        int totalLines = 0;
+        while (!stringList.isEmpty()) {
+            String currentString = stringList.get(0);
+            Integer stringLineNumber = -1;
+            for (Map.Entry<Integer, String> entry : stringToLineMap.entrySet()) {
+                if (Objects.equals(currentString, entry.getValue())) {
+                    stringLineNumber = entry.getKey();
+                    if (totalLines > 0) {
+                        bufferedWriter.newLine();
+                    }
+                    bufferedWriter.write(stringLineNumber + "\t" + currentString);
+                    totalLines++;
+                    bufferedWriter.flush();
+                    break;
+                }
+            }
+            stringList.remove(currentString);
+            stringToLineMap.remove(stringLineNumber);
         }
     }
 
@@ -146,6 +207,47 @@ public class RecreateFiles {
             bufferedWriter.close();
         } catch (IOException e) {
             System.out.println("Error occurred.");
+        }
+    }
+
+    public static void createRemoveEmptyLinesFile(final String[] stringArray, final String writeFileName) {
+        File writeToFile;
+        BufferedWriter bufferedWriter;
+
+        try {
+            writeToFile = new File(writeFileName);
+            bufferedWriter = new BufferedWriter(new FileWriter(writeToFile));
+
+            int totalLines = 0;
+            for (int index = 0; index < stringArray.length; index++) {
+                String readLine = stringArray[index];
+                if (!readLine.isEmpty()) {
+                    if (totalLines > 0) {
+                        bufferedWriter.newLine();
+                    }
+                    bufferedWriter.write(readLine);
+                    totalLines++;
+                    bufferedWriter.flush();
+                }
+            }
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error occurred.");
+        }
+    }
+
+    private static boolean processStringForRemoveEmptyLinesFile(final String stringLine, BufferedWriter bufferedWriter, int totalLines) throws IOException {
+        if (!stringLine.isEmpty()) {
+            if (totalLines > 0) {
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.write(stringLine);
+            totalLines++;
+            bufferedWriter.flush();
+            return true;
+        } else {
+            return false;
         }
     }
 
