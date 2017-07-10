@@ -3,9 +3,6 @@ package com.aquaq.tinpui.exercises;
 import java.io.*;
 import java.util.*;
 
-/**
- * Created by tchan on 04/07/17.
- */
 public class RecreateFiles {
 
     /**
@@ -180,7 +177,7 @@ public class RecreateFiles {
         File writeToFile;
         BufferedWriter bufferedWriter;
 
-        String readLine;
+        String stringLine;
 
         try {
             readFromFile = new File(readFileName);
@@ -189,18 +186,13 @@ public class RecreateFiles {
             writeToFile = new File(writeFileName);
             bufferedWriter = new BufferedWriter(new FileWriter(writeToFile));
 
-            readLine = bufferedReader.readLine();
-            int totalLines = 0;
-            while (readLine != null) {
-                if (!readLine.isEmpty()) {
-                    if (totalLines > 0) {
-                        bufferedWriter.newLine();
-                    }
-                    bufferedWriter.write(readLine);
-                    totalLines++;
-                    bufferedWriter.flush();
+            stringLine = bufferedReader.readLine();
+            boolean firstLine = true;
+            while (stringLine != null) {
+                if (processStringForRemoveEmptyLinesFile(stringLine, bufferedWriter, firstLine)) {
+                    firstLine = false;
                 }
-                readLine = bufferedReader.readLine();
+                stringLine = bufferedReader.readLine();
             }
 
             bufferedReader.close();
@@ -218,16 +210,11 @@ public class RecreateFiles {
             writeToFile = new File(writeFileName);
             bufferedWriter = new BufferedWriter(new FileWriter(writeToFile));
 
-            int totalLines = 0;
+            boolean firstLine = true;
             for (int index = 0; index < stringArray.length; index++) {
-                String readLine = stringArray[index];
-                if (!readLine.isEmpty()) {
-                    if (totalLines > 0) {
-                        bufferedWriter.newLine();
-                    }
-                    bufferedWriter.write(readLine);
-                    totalLines++;
-                    bufferedWriter.flush();
+                String stringLine = stringArray[index];
+                if (processStringForRemoveEmptyLinesFile(stringLine, bufferedWriter, firstLine)) {
+                    firstLine = false;
                 }
             }
 
@@ -237,13 +224,12 @@ public class RecreateFiles {
         }
     }
 
-    private static boolean processStringForRemoveEmptyLinesFile(final String stringLine, BufferedWriter bufferedWriter, int totalLines) throws IOException {
+    private static boolean processStringForRemoveEmptyLinesFile(final String stringLine, BufferedWriter bufferedWriter, boolean firstLine) throws IOException {
         if (!stringLine.isEmpty()) {
-            if (totalLines > 0) {
+            if (!firstLine) {
                 bufferedWriter.newLine();
             }
             bufferedWriter.write(stringLine);
-            totalLines++;
             bufferedWriter.flush();
             return true;
         } else {
