@@ -8,9 +8,19 @@
     <artifactId>codingexercises</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${javaVersion}</source>
+                    <target>${javaVersion}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <properties>
-        <maven.compiler.source>${javaVersion}</maven.compiler.source>
-        <maven.compiler.target>${javaVersion}</maven.compiler.target>
         <javaVersion>1.8</javaVersion>
     </properties>
 </project>
