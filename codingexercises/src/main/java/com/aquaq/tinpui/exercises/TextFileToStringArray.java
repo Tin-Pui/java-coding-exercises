@@ -3,9 +3,6 @@ package com.aquaq.tinpui.exercises;
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * Created by tchan on 10/07/17.
- */
 public class TextFileToStringArray {
 
     public static String[] getStringArray(String fileName) throws IOException {

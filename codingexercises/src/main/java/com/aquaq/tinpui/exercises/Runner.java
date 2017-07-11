@@ -2,16 +2,14 @@ package com.aquaq.tinpui.exercises;
 
 import java.io.IOException;
 
-/**
- * Created by Tin-Pui.Chan on 13/06/2017.
- */
 public class Runner {
 
     public static void main(String[] args){
-        String fileName = "src/main/resources/num.txt";
-
+        String fileName = "num.txt";
+        String filePath = Thread.currentThread().getContextClassLoader().getResource(fileName).getPath();
+        System.out.println(filePath);
         try {
-            String[] stringArray = TextFileToStringArray.getStringArray(fileName);
+            String[] stringArray = TextFileToStringArray.getStringArray(filePath);
             System.out.println(TotalNumbers.totalNum(stringArray));
             RecreateFiles.createNewFile(stringArray, "target/num2.txt");
             RecreateFiles.createReorderedFile(stringArray, "target/num3.txt");

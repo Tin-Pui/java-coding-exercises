@@ -5,9 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-/**
- * Created by tchan on 04/07/17.
- */
 public class TotalNumbers {
 
     public static int totalNum(final String fileName) {
