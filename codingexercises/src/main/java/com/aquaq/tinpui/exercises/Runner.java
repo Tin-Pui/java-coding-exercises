@@ -13,9 +13,9 @@ public class Runner {
         try {
             String[] stringArray = TextFileToStringArray.getStringArray(fileName);
             System.out.println(TotalNumbers.totalNum(stringArray));
-            RecreateFiles.createNewFile(stringArray, "num2.txt");
-            RecreateFiles.createReorderedFile(stringArray, "num3.txt");
-            RecreateFiles.createRemoveEmptyLinesFile(stringArray, "num4.txt");
+            RecreateFiles.createNewFile(stringArray, "target/num2.txt");
+            RecreateFiles.createReorderedFile(stringArray, "target/num3.txt");
+            RecreateFiles.createRemoveEmptyLinesFile(stringArray, "target/num4.txt");
         } catch (IOException exception) {
             System.out.println("Failed to read from file.");
         }
