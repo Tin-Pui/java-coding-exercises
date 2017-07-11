@@ -15,7 +15,7 @@ public class Runner {
             RecreateFiles.createReorderedFile(stringArray, "target/num3.txt");
             RecreateFiles.createRemoveEmptyLinesFile(stringArray, "target/num4.txt");
         } catch (IOException exception) {
-            System.out.println("Failed to read from file.");
+            System.out.println("Failed to read from file: " + filePath);
         }
     }
 
