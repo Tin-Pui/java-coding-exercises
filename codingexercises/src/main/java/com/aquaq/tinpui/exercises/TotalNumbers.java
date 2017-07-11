@@ -42,8 +42,10 @@ public class TotalNumbers {
 
     private static Integer getIntFromString(String string) {
         Integer intValue = 0;
-        if (string.matches("[0-9]+")) {
+        try {
             intValue = Integer.parseInt(string);
+        } catch (NumberFormatException exception) {
+            System.out.println("Not an integer");
         }
         return intValue;
     }
